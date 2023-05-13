@@ -4,13 +4,35 @@
 #include <iostream>
 #include <span>
 #include <string>
+#include <sys/socket.h>
 
 using namespace std;
 
 void get_URL( const string& host, const string& path )
 {
-  cerr << "Function called: get_URL(" << host << ", " << path << ")\n";
-  cerr << "Warning: get_URL() has not been implemented yet.\n";
+  /*
+     host = cs144.keithw.org path = /hello http
+     最终获取http://cs144.keithw.org/hello的内容
+     使用TCPSocket和Address类
+  */
+  TCPSocket tcp_socket;
+  string service { "http" };
+  Address addr( host, service );
+  tcp_socket.connect( addr );
+  string buf( "GET " + path + " HTTP/1.1\r\n" + "Host: " + host + " \r\n" + "Connection: close\r\n\r\n" );
+  // buf = "GET /hello HTTP/1.1\r\nHost: cs144.keithw.org\r\nConnection: close\r\n";
+  // buf = "GET /robots.txt HTTP/1.1\r\nHost: www.baidu.com\r\nConnection: close\r\n\n";
+  // cout << buf << endl;
+  tcp_socket.write( buf );
+  tcp_socket.shutdown( SHUT_WR );
+  string recv( 1024, ' ' );
+  while ( !tcp_socket.eof() ) {
+    tcp_socket.read( recv );
+    cout << recv << endl;
+  }
+  tcp_socket.close();
+  // cerr << "Function called: get_URL(" << host << ", " << path << ")\n";
+  // cerr << "Warning: get_URL() has not been implemented yet.\n";
 }
 
 int main( int argc, char* argv[] )
