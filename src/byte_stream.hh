@@ -1,6 +1,8 @@
 #pragma once
 
-#include <queue>
+// #include <queue>
+#include <cstdint>
+#include <deque>
 #include <stdexcept>
 #include <string>
 #include <string_view>
@@ -13,6 +15,16 @@ class ByteStream
 protected:
   uint64_t capacity_;
   // Please add any additional state to the ByteStream here, and not to the Writer and Reader interfaces.
+  // std::deque<char> buffer_{};
+  std::string buffer_{};
+  bool reach_end_{false};
+  uint64_t total_write_bytes{0};
+  uint64_t total_read_bytes{0};
+  bool set_error_{false};
+  uint64_t avl_sz = capacity_;
+  // uint64_t avl_cap{0};
+  
+
 
 public:
   explicit ByteStream( uint64_t capacity );
@@ -40,7 +52,7 @@ public:
 class Reader : public ByteStream
 {
 public:
-  std::string_view peek() const; // Peek at the next bytes in the buffer
+  std::string peek() const; // Peek at the next bytes in the buffer
   void pop( uint64_t len );      // Remove `len` bytes from the buffer
 
   bool is_finished() const; // Is the stream finished (closed and fully popped)?

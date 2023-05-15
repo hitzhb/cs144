@@ -28,7 +28,7 @@ void get_URL( const string& host, const string& path )
   string recv( 1024, ' ' );
   while ( !tcp_socket.eof() ) {
     tcp_socket.read( recv );
-    cout << recv << endl;
+    cout << recv;
   }
   tcp_socket.close();
   // cerr << "Function called: get_URL(" << host << ", " << path << ")\n";
