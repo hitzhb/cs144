@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <stdexcept>
 #include <iostream>
+#include <string_view>
 
 #include "byte_stream.hh"
 
@@ -70,7 +71,7 @@ uint64_t Writer::bytes_pushed() const
   return total_write_bytes;
 }
 // string str;
-string Reader::peek() const
+string_view Reader::peek() const
 {
   // Your code here.
   // string str(buffer_.rbegin(), buffer_.rbegin() + static_cast<std::ptrdiff_t>(bytes_buffered()) - 1);
